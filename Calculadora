@@ -1,2 +1,42 @@
-Aqui vamos a hacer nuestra calculadora
-Aqui ira nuestro codigo 
+#include <iostream> // Para usar cin y cout
+#include <cstdlib>  // Para system("cls") o system("clear")
+#include <limits>   // Para limpiar errores de entrada
+
+using namespace std;
+
+void limpiarPantalla();
+void mostrarMenu();
+int main() {
+while (activa) {
+        limpiarPantalla();
+        mostrarMenu();
+        cout << "Elige una opcion: ";
+        cin >> opcion;
+
+
+
+
+
+
+
+
+
+
+void limpiarPantalla() {
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
+}
+
+void mostrarMenu() {
+    cout << "CALCULADORA CIENTIFICA" << endl;
+    cout << "1. Sumar (Opciones: 2 numeros o Lista)" << endl;
+    cout << "2. Restar" << endl;
+    cout << "3. Multiplicar (Opciones: 2 numeros o Lista)" << endl;
+    cout << "4. Dividir" << endl;
+    cout << "5. Potencia (Por defecto: Cuadrado)" << endl;
+    cout << "6. Raiz Cuadrada" << endl;
+    cout << "7. Factorial" << endl;
+    cout << "8. Salir" << endl;
