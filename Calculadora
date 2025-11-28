@@ -1,27 +1,172 @@
-#include <iostream> // Para usar cin y cout
-#include <cstdlib>  // Para system("cls") o system("clear")
-#include <limits>   // Para limpiar errores de entrada
+#include <iostream> // Libreria para entrada y salida de datos
+#include <cstdlib>  // Libreria para usar system y limpiar pantalla
+#include <cmath>    // Libreria matematica para pow y sqrt
+#include <limits>   // Libreria para limpiar errores en el buffer de entrada
 
-using namespace std;
+using namespace std; // Para evitar escribir std:: en cada comando
+
+// FUNCIONES
 
 void limpiarPantalla();
 void mostrarMenu();
+
+// 1. SOBRECARGA: Mismo nombre de funcion, distintos parametros
+float sumar(float a, float b); // Version para 2 numeros
+float sumar(int cantidad);     // Version para N numeros (usa ciclo)
+
+float restar(float a, float b); // Resta simple de dos numeros
+
+// 2. SOBRECARGA EN MULTIPLICACION
+float multiplicar(float a, float b);
+float multiplicar(int cantidad);
+
+float dividir(float a, float b);
+
+// 3. PARAMETRO POR OMISION:
+// Si no enviamos el segundo dato, la funcion asume que exp vale 2
+float potencia(float base, int exp = 2); 
+
+float raizCuadrada(float n);
+long long factorial(int n); // Funcion recursiva
+
 int main() {
-while (activa) {
-        limpiarPantalla();
-        mostrarMenu();
+    int opcion; // Variable para guardar la seleccion del menu
+    float n1, n2; // Variables auxiliares para operaciones de 2 numeros
+    int cant; // Variable para saber cuantos numeros operar en las listas
+    float resultado; // Variable para almacenar el resultado final
+    bool activa = true; // Bandera para mantener el programa abierto
+
+    // Ciclo principal del programa
+    while (activa) {
+        limpiarPantalla(); // Limpiamos consola
+        mostrarMenu();     // Mostramos opciones
         cout << "Elige una opcion: ";
-        cin >> opcion;
+        cin >> opcion;     // Leemos opcion
 
+        // Bloque try para capturar errores (excepciones)
+        try {
+            switch (opcion) {
+                case 1: // SUMA (Demostracion de Sobrecarga)
+                    limpiarPantalla();
+                    cout << "SUMA" << endl; // Titulo limpio
+                    cout << "1. Sumar dos numeros" << endl;
+                    cout << "2. Sumar una lista de numeros" << endl;
+                    cout << "Opcion: ";
+                    int opSum;
+                    cin >> opSum;
 
+                    if (opSum == 1) {
+                        cout << "Numero 1: "; cin >> n1;
+                        cout << "Numero 2: "; cin >> n2;
+                        // Llamamos a la version 1 de sumar (2 flotantes)
+                        resultado = sumar(n1, n2);
+                    } else {
+                        cout << "Cuantos numeros vas a sumar?: "; cin >> cant;
+                        // Validacion basica: no se puede sumar 1 solo numero
+                        if (cant < 2) throw "Se necesitan al menos 2 numeros.";
+                        // Llamamos a la version 2 de sumar (1 entero) -> Sobrecarga
+                        resultado = sumar(cant);
+                    }
+                    cout << "Resultado: " << resultado << endl;
+                    break;
 
+                case 2: // RESTA (Simple)
+                    cout << "Numero 1: "; cin >> n1;
+                    cout << "Numero 2: "; cin >> n2;
+                    resultado = restar(n1, n2);
+                    cout << "Resultado: " << resultado << endl;
+                    break;
 
+                case 3: // MULTIPLICACION (Demostracion de Sobrecarga)
+                    limpiarPantalla();
+                    cout << "MULTIPLICACION" << endl;
+                    cout << "1. Dos numeros" << endl;
+                    cout << "2. Varios numeros" << endl;
+                    cout << "Opcion: ";
+                    int opMult;
+                    cin >> opMult;
 
+                    if (opMult == 1) {
+                        cout << "Numero 1: "; cin >> n1;
+                        cout << "Numero 2: "; cin >> n2;
+                        resultado = multiplicar(n1, n2);
+                    } else {
+                        cout << "Cuantos numeros multiplicaras?: "; cin >> cant;
+                        if (cant < 2) throw "Minimo 2 numeros.";
+                        // Llamamos a multiplicar version larga
+                        resultado = multiplicar(cant);
+                    }
+                    cout << "Resultado: " << resultado << endl;
+                    break;
 
+                case 4: // DIVISION
+                    cout << "Numerador: "; cin >> n1;
+                    cout << "Denominador: "; cin >> n2;
+                    // Esta funcion puede lanzar error si no es 0
+                    resultado = dividir(n1, n2);
+                    cout << "Resultado: " << resultado << endl;
+                    break;
 
+                case 5: // POTENCIA (Demostracion de Parametro por Omision)
+                    cout << "Base: "; cin >> n1;
+                    
+                    cout << "Ingresar exponente? (1. Si / 2. No, usar cuadrado): ";
+                    int opPot;
+                    cin >> opPot;
+                    
+                    if (opPot == 1) {
+                        int ex;
+                        cout << "Exponente: "; cin >> ex;
+                        // Aqui NO usamos la omision, enviamos los dos datos
+                        resultado = potencia(n1, ex);
+                    } else {
+                        // Aqui SI usamos la omision. Solo enviamos la base.
+                        // El compilador pone el 2 automaticamente.
+                        resultado = potencia(n1); 
+                    }
+                    cout << "Resultado: " << resultado << endl;
+                    break;
 
+                case 6: // RAIZ CUADRADA
+                    cout << "Numero: "; cin >> n1;
+                    // Lanza error si es negativo
+                    resultado = raizCuadrada(n1);
+                    cout << "Resultado: " << resultado << endl;
+                    break;
 
+                case 7: // FACTORIAL (Recursividad)
+                    cout << "Entero positivo: "; 
+                    int f; cin >> f;
+                    // El factorial no existe para negativos
+                    if (f < 0) throw "No existe factorial negativo.";
+                    cout << "Resultado: " << factorial(f) << endl;
+                    break;
 
+                case 8: // SALIR
+                    activa = false; // Cambiamos bandera para salir del while
+                    cout << "Cerrando..." << endl;
+                    break;
+
+                default:
+                    cout << "Opcion no valida." << endl;
+            }
+        }
+        catch (const char* msg) { // Para los errores de tipo texto
+            cout << "Error: " << msg << endl;
+            cin.clear(); // Limpiamos el estado de error de cin
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Vaciamos buffer
+        }
+
+        // Si no hemos salido, pausamos para ver el resultado
+        if (activa) {
+            cout << "Presiona Enter para continuar...";
+            cin.ignore(); cin.get();
+        }
+    }
+    return 0; // Fin del programa
+}
+
+// Funcion para limpiar pantalla segun sistema
 void limpiarPantalla() {
     #ifdef _WIN32
         system("cls");
@@ -32,11 +177,83 @@ void limpiarPantalla() {
 
 void mostrarMenu() {
     cout << "CALCULADORA CIENTIFICA" << endl;
-    cout << "1. Sumar (Opciones: 2 numeros o Lista)" << endl;
+    cout << "1. Sumar " << endl;
     cout << "2. Restar" << endl;
-    cout << "3. Multiplicar (Opciones: 2 numeros o Lista)" << endl;
+    cout << "3. Multiplicar" << endl;
     cout << "4. Dividir" << endl;
     cout << "5. Potencia (Por defecto: Cuadrado)" << endl;
     cout << "6. Raiz Cuadrada" << endl;
     cout << "7. Factorial" << endl;
     cout << "8. Salir" << endl;
+}
+
+// FUNCIONES
+
+// Suma Normal (2 parametros)
+float sumar(float a, float b) {
+    return a + b;
+}
+
+// Suma con Sobrecarga (1 parametro int)
+// Esta funcion pide los numeros dentro de un ciclo
+float sumar(int cantidad) {
+    float total = 0; // Acumulador empieza en 0
+    float temp;      // Variable temporal
+    cout << "Ingresa los " << cantidad << " numeros:" << endl;
+    
+    // Ciclo para pedir cada numero
+    for(int i=0; i<cantidad; i++) {
+        cout << "Dato " << i+1 << ": ";
+        cin >> temp;
+        total += temp; // Sumamos al total
+    }
+    return total;
+}
+
+// Resta simple
+float restar(float a, float b) {
+    return a - b;
+}
+
+// Multiplicacion Normal
+float multiplicar(float a, float b) {
+    return a * b;
+}
+
+// Multiplicacion con Sobrecarga
+float multiplicar(int cantidad) {
+    float total = 1; // Importante: Iniciar en 1 para multiplicar
+    float temp;
+    cout << "Ingresa los " << cantidad << " numeros:" << endl;
+    
+    for(int i=0; i<cantidad; i++) {
+        cout << "Dato " << i+1 << ": ";
+        cin >> temp;
+        total *= temp; // Multiplicamos al acumulado
+    }
+    return total;
+}
+
+// Division con validacion de cero
+float dividir(float a, float b) {
+    if (b == 0) throw "Division entre cero prohibida."; // Lanzamos excepcion
+    return a / b;
+}
+
+// Funcion con parametro por omision (exp = 2)
+// El valor por defecto solo se escribe en el prototipo arriba
+float potencia(float base, int exp) {
+    return pow(base, exp);
+}
+
+// Raiz cuadrada con validacion de negativos
+float raizCuadrada(float n) {
+    if (n < 0) throw "Raiz negativa."; // Lanzamos excepcion
+    return sqrt(n);
+}
+
+// Funcion Recursiva para factorial
+long long factorial(int n) {
+    if (n <= 1) return 1; // Caso base: factorial de 0 o 1 es 1
+    return n * factorial(n - 1); // Llamada recursiva: n * factorial(n-1)
+}
